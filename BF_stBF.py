@@ -86,7 +86,7 @@ def BattleResult(text1):
         st.session_state["page_control"] = 57
     else:
         text2 = st.session_state["Enemy"].Enemy_Attack(st.session_state["Player"], st.session_state.AuraFlag)
-        if "Aura!" in text2:
+        if "Aura" in text2:
             st.session_state.AuraFlag = False
         if st.session_state["Player"].HP < 1:
             #Player Dead
