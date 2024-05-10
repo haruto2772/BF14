@@ -46,6 +46,8 @@ class CharacterStatus():
         else:
             SN = "Attack"
             DmgVal = int((AttackVal - Enemy.Def) * (1 - Enemy.VIT/100))
+        if "Immortal" in Enemy.Status:
+            DmgVal = int(DmgVal / 2)
         if DmgVal < 1:
             text = f"{self.name} is {SN}! {Enemy.name} is defended!"
         else:
@@ -153,12 +155,6 @@ class CharacterStatus():
 class PlayerStatus(CharacterStatus):
     def __init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold, gacha1, gacha2):
         CharacterStatus.__init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold, gacha1, gacha2)
-        if "Saikyo" in name:
-            Weapon = WeaponStatus("Dagger", 20, 99, 0, 0, "Swings!", [])
-            Armor = ArmorStatus("Cloth", 9999, 0, 0, "Immortal!!", [])
-        else:
-            Weapon = WeaponStatus("Dagger", 2, 6, 0, 0, "", [])
-            Armor = ArmorStatus("Cloth", 1, 0, 0, "", [])
         if "!3" in name:
             Accesory = AccesoryStatus("Ring", 3, "", ['','',''])
         elif "!4" in name:
@@ -166,16 +162,20 @@ class PlayerStatus(CharacterStatus):
         elif "!5" in name:
             Accesory = AccesoryStatus("Ring", 5, "", ['','','','',''])
         elif "!6" in name:
-            Accesory = AccesoryStatus("Ring", 6, "", ['','','','','',''])
+            Accesory = AccesoryStatus("Ring", 5, "", ['','','','',''])
         elif "!7" in name:
-            Accesory = AccesoryStatus("Ring", 7, "", ['','','','','','',''])
+            Accesory = AccesoryStatus("Ring", 5, "", ['','','','',''])
         elif "!8" in name:
-            Accesory = AccesoryStatus("Ring", 8, "", ['','','','','','','',''])
+            Accesory = AccesoryStatus("Ring", 5, "", ['','','','',''])
         else:
             Accesory = AccesoryStatus("Ring", 1, "", [''])
-        #Weapon = WeaponStatus("Dagger", 2, 6, 3, 1, "Fire", ["STR3"])
-        #Armor = ArmorStatus("Cloth", 100, 30, 1, "Swings!", ["INT5"])
-        #Accesory = AccesoryStatus("Ring", 5, "Power", ["VIT10","MGR30","STR4","INT57",""])
+        if "Saikyo" in name:
+            Weapon = WeaponStatus("Dagger", 20, 99, 0, 0, "Slash!!", [])
+            Armor = ArmorStatus("Cloth", 9999, 0, 0, "Immortal!!", [])
+            Accesory = AccesoryStatus("Ring", 1, "ZANTETSU!!", [''])
+        else:
+            Weapon = WeaponStatus("Dagger", 2, 6, 0, 0, "", [])
+            Armor = ArmorStatus("Cloth", 1, 0, 0, "", [])
         self.Equips = {"Weapon":"none", "Armor":"none", "Accesory":"none"}
         self.Equip(Weapon, Armor, Accesory)
         
@@ -490,8 +490,8 @@ class EnemyStatus():
             Defval = int(((DiceRoll(2,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 50
-            VIT = 75
-            MGR = 75
+            VIT = 70
+            MGR = 70
             Status = ["Swings!", "Critical", "Fire"]          
             gold = int(DiceRoll(3, 6) * Mag)
             MonRew = 2
@@ -506,8 +506,8 @@ class EnemyStatus():
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(10 * Mag)
-            Defval = int(((DiceRoll(6,int(Mag+8)) + (cnt//2) + 1)) * Mag)
-            STR = 50
+            Defval = int(((DiceRoll(4,int(Mag+8)) + (cnt//2) + 1)) * Mag)
+            STR = 20
             INT = 50
             VIT = 80
             MGR = 80
@@ -553,7 +553,7 @@ class EnemyStatus():
             gold = int(DiceRoll(1, 10) * Mag)
             MonRew = 1
             gacha1 = 2
-            gacha2 = 1                       
+            gacha2 = 0                       
         elif Sel > 60 and StageName != "DarkWood":
             #TrickFlower
             name = "TrickFlower"
@@ -581,7 +581,7 @@ class EnemyStatus():
             gold = int(DiceRoll(1, 8) * Mag)
             MonRew = 1
             gacha1 = 2
-            gacha2 = 1
+            gacha2 = 0
         elif (Sel > 60 and StageName == "DarkWood") or (Sel > 40 and StageName != "DarkWood"):
             #SharmanChar
             name = "SharmanChar"
@@ -621,8 +621,8 @@ class EnemyStatus():
             gacha1 = 1
             gacha2 = 0
         else:
-            #RuinsGuardian
-            name = "RuinsGuardian"
+            #RuinGuardian
+            name = "RuinGuardian"
             Lv = int(3 + Mag)
             HP = int(120 * Mag)
             MP = 20
@@ -641,7 +641,7 @@ class EnemyStatus():
             gold = int(40 * Mag)
             MonRew = 3
             gacha1 = 0
-            gacha2 = 9
+            gacha2 = 8
         self.Enemy = CharacterStatus(name,Lv,HP,MP,Atk1,Atk2,Atk3,Defval,STR, INT, VIT, MGR, Status, MonRew, gold, gacha1, gacha2)
 
     def Enemy_Attack(self, Player, AuraFlag):
@@ -672,7 +672,7 @@ class EnemyStatus():
             if text2 != "":
                 text1 += "  \n"
             text = text1 + text2
-        elif self.Enemy.name == "RuinsGuardian":
+        elif self.Enemy.name == "RuinGuardian":
             if EnemyAction == 5:
                 text = self.Enemy.Battle_Healing(6, 3, 10, self.Enemy.Lv, False)
             else:

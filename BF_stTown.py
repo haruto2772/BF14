@@ -55,7 +55,7 @@ def buy_ShopItem(cnt, x, price):
         st.write("Irregal Item")
 
 def Town_DispPStatus():
-    st.header("BF 1.4")
+    st.header("BF 1.4a")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
@@ -146,7 +146,7 @@ def Enchant():
         Wcost = 800
         WEVal = OB.DiceRoll(5,10)
     elif WVal == 4:
-        Wcost = 500
+        Wcost = 400
         WEVal = OB.DiceRoll(4,8)
     elif WVal == 3:
         Wcost = 200
@@ -178,7 +178,7 @@ def Enchant():
         AEVal = OB.DiceRoll(5,10)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 4:
-        Acost = 500
+        Acost = 400
         AEVal = OB.DiceRoll(4,8)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 3:
@@ -382,7 +382,7 @@ def ElderAdvice():
         st.button("老人の話を聞く", on_click = change_Ending01)
     elif st.session_state["Player"].Lv == 8:
         st.write("<Vhalhara>のボスは悪夢の攻撃<Curse>を使ってくる。  \n \
-                  また防御力も非常に高いから。こちらも<Curse>で対抗せねばならない。  \n \
+                  また防御力も非常に高いから、こちらも<Curse>で対抗せねばならない。  \n \
                   そして敵の使ってくる<Curse>に有効な作戦がある、  \n \
                   武器の<Enchant>補正は<Curse>の影響を受けないのだ。")
     elif st.session_state["Player"].Lv > 8:

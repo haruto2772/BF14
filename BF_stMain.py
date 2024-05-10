@@ -26,15 +26,6 @@ def PlayerDef():
     if "#" in name:
         st.session_state["Player"].gacha1 = 99
         st.session_state["Player"].gacha2 = 99
-    if "Aura!" in name:
-        st.session_state["Player"].Accesory.AddStatus("Aura!")
-        st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
-    elif "Curse!" in name:
-        st.session_state["Player"].Accesory.AddStatus("Curse!")
-        st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory)
-    elif "Swings!" in name:
-        st.session_state["Player"].Accesory.AddStatus("Swings!")
-        st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
     st.session_state["page_control"] = 0
 
 def change_Town():

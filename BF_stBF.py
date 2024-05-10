@@ -65,10 +65,8 @@ def BattleResult(text1):
         else:
             text6 = ""
         if "Immortal!!" in st.session_state["Player"].Status:
-            st.session_state["Player"].HP = st.session_state["Player"].MaxHP
-            st.session_state["Player"].MP = st.session_state["Player"].MaxMP
-            text7 = "All HPMP Recovering!"
-            text8 = ""
+            text7 = st.session_state["Player"].Battle_Healing(0, st.session_state["Player"].Lv, 10, 1, True)
+            text8 = st.session_state["Player"].Battle_MPing(0, 2, st.session_state["Player"].Lv + 1, 1, True)
         else:
             if "Heal" in st.session_state["Player"].Status:
                 text7 = st.session_state["Player"].Battle_Healing(0, st.session_state["Player"].Lv, 6, 1, True)
@@ -103,7 +101,9 @@ def BattleResult(text1):
 
 def BF_Attack():
     text1 = ""; text2 = "";text3 = "";
-    if "Slash!!" in st.session_state["Player"].Status:
+    if "Slash!!" in st.session_state["Player"].Status and "Swings!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 0, 4, False)
+    elif "Slash!!" in st.session_state["Player"].Status:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 0, 3, False)
     elif "Swings!" in st.session_state["Player"].Status:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 0, 2, False)
@@ -114,7 +114,7 @@ def BF_Attack():
     else:
         text2 = ""
     if "Inferno!!" in st.session_state["Player"].Status:
-        text3 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv * 2, True) 
+        text3 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv * 3, True) 
     else:
         text3 = ""
     if "Curse!" in st.session_state["Player"].Status:
@@ -131,7 +131,9 @@ def BF_Attack():
 
 def BF_WAttack():
     text1 = ""; text2 = "";text3 = "";
-    if "Slash!!" in st.session_state["Player"].Status:
+    if "Slash!!" in st.session_state["Player"].Status and "Swings!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 5, False)
+    elif "Slash!!" in st.session_state["Player"].Status:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 4, False)
     elif "Swings!" in st.session_state["Player"].Status:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 3, False)
@@ -219,7 +221,7 @@ def BFResult_PlayerLose():
 
 #
 def BF_DispPlayerStatus():
-    st.header("BF 1.4")
+    st.header("BF 1.4a")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
@@ -292,13 +294,15 @@ def BFinit():
                 text = "Special Conglaturations!! "
             st.session_state["Player"].Lv += 1
             st.subheader(f"** {text}Clear the {SName} **")
-            st.session_state["Player"].Accesory.AddSlot()
+            
             getgold = int(OB.DiceRoll(12,20) * st.session_state["BF"].Mag)
             st.session_state["Player"].gold += getgold
-            st.write("Accesory Slot +1!")        
+            if st.session_state["Player"].Lv < 6:
+                st.write("Accesory Slot +1!") 
+                st.session_state["Player"].Accesory.AddSlot()   
             st.write(f"Get {getgold} gold!") 
-            st.session_state["Player"].gacha2 += 3
-            st.write("You get 3 Premium chicket!!")
+            st.session_state["Player"].gacha2 += 1
+            st.write("You get 1 Premium chicket!!")
         else:
             st.write(f"Clear the {SName}")
         st.button("Return Town", on_click = stMain.change_Town)
@@ -331,7 +335,7 @@ def Manual_Scroll(newScrollname):
         st.write("<★Rare Scroll>  \n") 
         st.write("武器、防具、アクセサリに一つ付加可能。効果は重複しない。 \n")
         st.write("Slash    : 攻撃回数+2。  \n")  
-        st.write("Immortal : 戦闘終了後、HP,MPが、全回復  \n") 
+        st.write("Immortal : 被武器ダメージ半減＆戦闘終了後、HP,MPが回復  \n") 
         st.write("ZANTETSU : 武器攻撃時、敵のDefとVITを無視  \n") 
         st.write("Inferno  : FireBallコマンドがInfernoに変化＆武器攻撃時、Infernoを使用  \n") 
     else:
