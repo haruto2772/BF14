@@ -221,7 +221,7 @@ def BFResult_PlayerLose():
 
 #
 def BF_DispPlayerStatus():
-    st.header("BF 1.4a")
+    st.header("BF 1.4b")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
@@ -564,3 +564,9 @@ def GetCrystal():
         SelectCrystal(1)      
     else:
         BFinit()
+
+def SelectGoldBag():
+    Ggold = st.session_state["NewGold"].gold
+    st.write(f"You get {Ggold} gold!")
+    st.session_state["Player"].gold += Ggold
+    st.button("OK")

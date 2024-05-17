@@ -410,7 +410,7 @@ def GetShopItem(MonRew, Rew, Player, StageStr):
     elif Sel1 < 4:
         Sel2 = OB.DiceRoll(1, 4)
         Items = MakeGetCrystal(Player, StageStr, Sel2)
-    elif Sel1 < int(det/2):
+    elif Sel1 < int((det-14)/2):
         Items = MakeGetWeapon(Rew, Player)
     else:
         Items = MakeGetArmor(Rew, Player)
@@ -464,6 +464,11 @@ def MakeScCy(Player):
         NewItem = MakeGetCrystal(Player, "", OB.DiceRoll(1,4))
     return NewItem
 
+def MakeGoldBag(Player):
+    Sel = OB.DiceRoll(Player.Lv, 20)
+    NewItem = OB.GoldBagStatus(Sel)
+    return NewItem
+
 def MakeGachaList_Normal(cnt, Player):
     GL = []
     for x in range(10):
@@ -471,8 +476,10 @@ def MakeGachaList_Normal(cnt, Player):
         if Sel > 97:
            GL.append(MakeGetScroll("", OB.DiceRoll(1,15)+3)) 
         elif Sel > 93:
-           GL.append(MakeGetCrystal(Player, "", OB.DiceRoll(1,4))) 
-        elif Sel > 46:
+           GL.append(MakeGetCrystal(Player, "", OB.DiceRoll(1,4)))
+        elif Sel > 80:
+            GL.append(MakeGoldBag(Player))
+        elif Sel > 41:
             ap = OB.DiceRoll(1,12)
             GL.append(MakeGetArmor(cnt + ap, Player))
         else:
@@ -504,7 +511,9 @@ def MakeGachaList_Premium(cnt, Player):
                 GL.append(MakeGetScroll("", OB.DiceRoll(1,15)+3)) 
             elif Sel > 92:
                 GL.append(MakeGetCrystal(Player, "", OB.DiceRoll(1,4))) 
-            elif Sel > 46:
+            elif Sel > 75:
+                GL.append(MakeGoldBag(Player))
+            elif Sel > 38:
                 ap = OB.DiceRoll(1,12)
                 GL.append(MakeGetArmor(cnt + ap, Player))
             else:
